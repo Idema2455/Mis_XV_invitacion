@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<!-- 
+  =====================================================================
+  EVENT INVITATION PACKAGE — PALOMA ORDAZ BAÑUELOS
+  =====================================================================
+  EVENT: Quinceañera — Paloma Ordaz Bañuelos
+  DATE: 15 de septiembre · 2026
+  THEME: Luxurious / Regal / Gold / Modern Victorian
+  STRUCTURE: 12 pages (0=Cover, 1-10=Content, 11-12=Custom)
+  INTERACTION: Pearl click → envelope opens + music starts
+  LIBRARIES: None (vanilla JS + pure CSS)
+  FILE SIZE: ~450KB (compressed)
+  =====================================================================
+  HOW TO USE:
+  1. Replace YOUR_MP3_URL_HERE.mp3 with actual audio file URL
+  2. Replace YOUR_YOUTUBE_ID_HERE with actual YouTube video ID
+  3. Replace placeholder images with actual images
+  4. Replace Google Maps links with actual URLs
+  5. Replace credit card/account placeholder with actual details
+  6. Uncomment Pages 11-12 if needed
+  =====================================================================
+-->
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Invitación — Paloma Ordaz Bañuelos</title>
+
+    <!-- 
+      =====================================================================
+      FONTS — Google Fonts (lightweight, modern elegance)
+      =====================================================================
+      Playfair Display: Serif (elegant, modern, refined)
+      Great Vibes: Script (flowing, romantic, decorative)
+      =====================================================================
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        /* 
+          =====================================================================
+          RESET & BASE STYLES
+          =====================================================================
+          PURPOSE: Normalize browser defaults and set base typography
+          =====================================================================
+        */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Smooth scrolling for the entire document */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 
+          BODY: Base styles for the entire invitation
+          - Background: dark green (#2a3834) to frame the cream cards
+          - Font defaults: Playfair Display (serif) for body text
+        */
+        body {
+            font-family: 'Playfair Display', serif;
+            background: #2a3834;
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        /* 
+          =====================================================================
+          MAIN CONTAINER — Wraps all pages
+          =====================================================================
+          PURPOSE: Centered container with max-width for readability
+          =====================================================================
+        */
+        .invitation-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 
+          =====================================================================
+          PAGE BASE — Common styles for all pages
+          =====================================================================
+          PURPOSE: Cream background, gold filigree border, consistent padding
+          =====================================================================
+        */
+        .page {
+            background: #faf6ed;
+            border: 12px solid transparent;
+            border-image: linear-gradient(135deg, #c19673, #d4af37, #957157, #c19673) 1;
+            border-image-slice: 1;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            padding: 30px 24px;
+            position: relative;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* Hover lift effect for desktop */
+        .page:hover {
+            transform: translateY(-4px);
+        }
+
+        /* 
+          PAGE: Active state for cover interaction
+          =====================================================================
+        */
+        .page-cover {
+            cursor: default;
+            min-height: 700px;
+            justify-content: flex-start;
+            padding-top: 40px;
+        }
+
+        /* 
+          =====================================================================
+          GOLD FILIGREE OVERLAY — SVG pattern that adorns every page
+          =====================================================================
+          PURPOSE: Consistent gold laser-cut-like overlay on all pages
+          =====================================================================
+        */
+        .filigree-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+        }
+
+        .filigree-overlay svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+          =====================================================================
+          BACKGROUND IMAGE PLACEHOLDER — For each page
+          =====================================================================
+          PURPOSE: User can insert background image on any page
+          =====================================================================
+        */
+        .bg-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.3;
+            background: transparent;
+            /* User: Replace with background-image: url('your-image.jpg'); */
+        }
+
+        /* 
+          =====================================================================
+          PAGE CONTENT — All content sits above backgrounds
+          =====================================================================
+        */
+        .page-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 0 — COVER / ENVELOPE
+          =====================================================================
+          PURPOSE: Interactive cover with pearl click to open
+          =====================================================================
+        */
+        .envelope-container {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+            perspective: 1000px;
+            min-height: 560px;
+        }
+
+        /* 
+          ENVELOPE: 3D container with perspective
+          =====================================================================
+        */
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-origin: center bottom;
+        }
+
+        /* Envelope OPEN state — flap rotates upward */
+        .envelope.open {
+            transform: rotateX(6deg);
+        }
+
+        /* 
+          ENVELOPE FLAP (front cover)
+          =====================================================================
+        */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #e8d5b5, #d4af37, #c19673);
+            border-radius: 4px;
+            transform-origin: top center;
+            transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            box-shadow: inset 0 -4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Flap opens upward when .open is added */
+        .envelope.open .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        /* 
+          ENVELOPE BODY (back content revealed after open)
+          =====================================================================
+        */
+        .envelope-body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #faf6ed, #f0e8d8);
+            border-radius: 4px;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 
+          RIBBON — Gold satin, slides off when pearl is clicked
+          =====================================================================
+        */
+        .ribbon-horizontal {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 18px;
+            background: linear-gradient(90deg, #d4af37, #f0d080, #d4af37);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 5;
+            border-radius: 2px;
+        }
+
+        .ribbon-horizontal.slide-off {
+            transform: translateY(-50%) translateX(120%);
+            opacity: 0;
+        }
+
+        .ribbon-vertical {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 100%;
+            background: linear-gradient(180deg, #d4af37, #f0d080, #d4af37);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.12);
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 5;
+            border-radius: 2px;
+        }
+
+        .ribbon-vertical.slide-off {
+            transform: translateX(-50%) translateX(120%);
+            opacity: 0;
+        }
+
+        /* 
+          PEARL — Click target with pulse animation
+          =====================================================================
+        */
+        .pearl-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            cursor: pointer;
+            min-width: 60px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pearl {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #f5ede0, #d4c4a8, #b8a88a);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5), inset 0 -4px 12px rgba(0, 0, 0, 0.15), inset 0 4px 12px rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Pearl glow — pulse animation */
+        .pearl::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.35), transparent 70%);
+            animation: pearlPulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pearlPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.25);
+                opacity: 1;
+            }
+        }
+
+        /* Pearl hover effect */
+        .pearl:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.7), inset 0 -4px 12px rgba(0, 0, 0, 0.15), inset 0 4px 12px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Pearl active (click) */
+        .pearl:active {
+            transform: scale(0.92);
+        }
+
+        /* Gem center on pearl */
+        .pearl-gem {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 30%, #fff6e6, #d4af37, #b8962a);
+            box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.6), 0 2px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 
+          COVER TEXT — Formal invitation header
+          =====================================================================
+        */
+        .cover-text {
+            position: relative;
+            z-index: 4;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .cover-text .line-1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #2a3834;
+            display: block;
+            font-weight: 400;
+        }
+
+        .cover-text .line-2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: #2a3834;
+            display: block;
+            line-height: 1.2;
+            margin-top: 4px;
+        }
+
+        /* 
+          SCROLL INDICATOR — Appears after envelope opens
+          =====================================================================
+        */
+        .scroll-indicator {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.8s ease 0.5s;
+            color: #c19673;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .scroll-indicator.visible {
+            opacity: 1;
+        }
+
+        .scroll-indicator .arrow {
+            font-size: 1.6rem;
+            animation: bounceArrow 1.8s ease-in-out infinite;
+        }
+
+        
+        @keyframes bounceArrow {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(8px);
+            }
+        }
+
+        /* 
+          =====================================================================
+          PAGE 1 — INVITATION CARD (Oval frame + photo placeholder)
+          =====================================================================
+        */
+        .oval-frame {
+            position: relative;
+            width: 220px;
+            height: 280px;
+            margin: 10px auto 20px;
+            border-radius: 50%;
+            /* Oval shape */
+            border: 4px solid #d4af37;
+            box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.15), 0 8px 30px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            background: #f0e8d8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+
+        .oval-frame .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* User: Replace src with actual photo */
+            background: linear-gradient(135deg, #f0e8d8, #e0d5c0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #957157;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .oval-frame .photo-placeholder::after {
+            content: '📸';
+            font-size: 2.4rem;
+            opacity: 0.4;
+        }
+
+        /* 
+          PAGE 1 — Text styles
+          =====================================================================
+        */
+        .page-1-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #2a3834;
+            margin-bottom: 4px;
+        }
+
+        .page-1-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.6rem;
+            color: #2a3834;
+            line-height: 1.1;
+        }
+
+        .page-1-date {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            color: #957157;
+            margin-top: 6px;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 2 — PARENTS
+          =====================================================================
+        */
+        .page-2-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: #2a3834;
+            margin-bottom: 16px;
+        }
+
+        .parents-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            margin: 8px 0 16px;
+            flex-wrap: wrap;
+        }
+
+        .parent-item {
+            text-align: center;
+        }
+
+        .parent-name {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #2a3834;
+            line-height: 1.2;
+        }
+
+        .parent-role {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #957157;
+        }
+
+        /* 
+          FILIGREE ACCENT LINE — Gold decorative divider
+          =====================================================================
+        */
+        .filigree-accent {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 12px 0;
+            position: relative;
+        }
+
+        .filigree-accent::before,
+        .filigree-accent::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d4af37;
+            font-size: 0.6rem;
+        }
+
+        .filigree-accent::before {
+            left: -14px;
+        }
+
+        .filigree-accent::after {
+            right: -14px;
+        }
+
+        /* 
+          FORMAL INVITATION TEXT (Page 2)
+          =====================================================================
+        */
+        .formal-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #2d2d2d;
+            max-width: 400px;
+            margin: 4px auto 0;
+            font-style: italic;
+        }
+
+        .formal-text .script-phrase {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.6rem;
+            color: #2a3834;
+            display: block;
+            margin: 4px 0;
+            font-style: normal;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 3 — COUNTDOWN
+          =====================================================================
+        */
+        .countdown-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #957157;
+        }
+
+        .countdown-number {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.8rem;
+            color: #2a3834;
+            line-height: 1;
+            margin: 4px 0;
+        }
+
+        .countdown-days {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #957157;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 4 — CEREMONY
+          =====================================================================
+        */
+        .detail-time {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
+            color: #2a3834;
+        }
+
+        .detail-place {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #2d2d2d;
+            margin: 4px 0;
+        }
+
+        .detail-address {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: #957157;
+            line-height: 1.6;
+        }
+
+        .map-link {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 24px;
+            border: 1.5px solid #d4af37;
+            border-radius: 30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #2a3834;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .map-link:hover {
+            background: #d4af37;
+            color: #faf6ed;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+        }
+
+        /* 
+          =====================================================================
+          PAGE 5 — RECEPTION
+          =====================================================================
+        */
+        /* Same as ceremony styles — reused */
+
+        /* 
+          =====================================================================
+          PAGE 6 — DRESS CODE
+          =====================================================================
+        */
+        .dress-type {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: #2a3834;
+        }
+
+        .dress-note {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: #2d2d2d;
+            max-width: 380px;
+            line-height: 1.6;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 7 — GIFT OPTIONS
+          =====================================================================
+        */
+        .gift-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #2a3834;
+        }
+
+        .gift-grid {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .gift-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .gift-icon {
+            font-size: 2.2rem;
+        }
+
+        .gift-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: #2d2d2d;
+            letter-spacing: 1px;
+        }
+
+        .gift-thanks {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.4rem;
+            color: #957157;
+            margin-top: 8px;
+        }
+
+        /* Transfer section */
+        .transfer-section {
+            margin-top: 14px;
+            padding: 14px 20px;
+            background: rgba(212, 175, 55, 0.06);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .transfer-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #957157;
+        }
+
+        .transfer-placeholder {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: #2d2d2d;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            word-break: break-all;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 8 — GALLERY (Carousel)
+          =====================================================================
+        */
+        .carousel-container {
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: grid;
+            grid-template-columns: 55% 40%;
+            grid-template-rows: 45% 35% 20%;
+            gap: 6px;
+            padding: 4px;
+            height: 380px;
+        }
+
+        .carousel-slide .img-placeholder {
+            background: linear-gradient(135deg, #f0e8d8, #e0d5c0);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #957157;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            overflow: hidden;
+        }
+
+        .carousel-slide .img-placeholder::after {
+            content: '📸';
+            font-size: 1.8rem;
+            opacity: 0.3;
+        }
+
+        /* Grid positions */
+        .img-1 {
+            grid-row: 1 / 2;
+            grid-column: 1 / 2;
+        }
+        .img-2 {
+            grid-row: 1 / 2;
+            grid-column: 2 / 3;
+        }
+        .img-3 {
+            grid-row: 2 / 3;
+            grid-column: 1 / 2;
+        }
+        .img-4 {
+            grid-row: 2 / 3;
+            grid-column: 2 / 3;
+        }
+        .img-5 {
+            grid-row: 3 / 4;
+            grid-column: 1 / 2;
+        }
+        .img-6 {
+            grid-row: 3 / 4;
+            grid-column: 2 / 3;
+        }
+
+        /* Carousel navigation dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d4c4a8;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #d4af37;
+            transform: scale(1.2);
+        }
+
+        .carousel-dot:hover {
+            background: #c19673;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 9 — RSVP
+          =====================================================================
+        */
+        .rsvp-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            color: #2d2d2d;
+            line-height: 1.6;
+            max-width: 360px;
+        }
+
+        .rsvp-button {
+            display: inline-block;
+            margin: 16px 0 8px;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #d4af37, #c19673);
+            border: none;
+            border-radius: 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #faf6ed;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .rsvp-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .rsvp-contact {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: #957157;
+            letter-spacing: 1px;
+        }
+
+        /* 
+          =====================================================================
+          PAGE 10 — THANKS
+          =====================================================================
+        */
+        .thanks-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #2d2d2d;
+            max-width: 380px;
+            font-style: italic;
+        }
+
+        .thanks-name {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #2a3834;
+            margin-top: 12px;
+        }
+
+        /* 
+          =====================================================================
+          RESPONSIVE — Mobile-first adjustments
+          =====================================================================
+        */
+        @media (max-width: 480px) {
+            .page {
+                padding: 20px 16px;
+                min-height: 480px;
+                border-width: 8px;
+            }
+            .page-cover {
+                min-height: 560px;
+                padding-top: 20px;
+            }
+            .envelope {
+                height: 400px;
+            }
+            .pearl {
+                width: 44px;
+                height: 44px;
+            }
+            .pearl::before {
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                bottom: -8px;
+            }
+            .cover-text .line-1 {
+                font-size: 0.8rem;
+            }
+            .cover-text .line-2 {
+                font-size: 1.6rem;
+            }
+            .oval-frame {
+                width: 160px;
+                height: 210px;
+            }
+            .page-1-title {
+                font-size: 2rem;
+            }
+            .page-1-name {
+                font-size: 1.1rem;
+            }
+            .parents-container {
+                gap: 20px;
+            }
+            .parent-name {
+                font-size: 1.6rem;
+            }
+            .countdown-number {
+                font-size: 3.6rem;
+            }
+            .carousel-slide {
+                height: 300px;
+            }
+            .rsvp-button {
+                padding: 12px 28px;
+                font-size: 0.85rem;
+            }
+            .formal-text .script-phrase {
+                font-size: 1.2rem;
+            }
+            .gift-grid {
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .page {
+                padding: 16px 12px;
+                min-height: 400px;
+                border-width: 6px;
+            }
+            .envelope {
+                height: 340px;
+            }
+            .oval-frame {
+                width: 130px;
+                height: 170px;
+            }
+            .carousel-slide {
+                height: 240px;
+            }
+            .parent-name {
+                font-size: 1.3rem;
+            }
+            .countdown-number {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invitation-container">
+
+        <!-- 
+          =====================================================================
+          PAGE 0 — COVER
+          =====================================================================
+          PURPOSE: Interactive envelope with pearl click to open + music start
+          =====================================================================
+        -->
+        <section class="page page-cover" id="page-cover">
+
+            <!-- Gold filigree overlay -->
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <!-- Baroque/Victorian filigree pattern -->
+                        <pattern id="filigreePattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                            <path d="M50,0 C50,10 40,20 30,20 C20,20 10,10 10,0 C10,-10 20,-20 30,-20 C40,-20 50,-10 50,0 Z" 
+                                  fill="none" stroke="#d4af37" stroke-width="0.5" opacity="0.6"/>
+                            <path d="M50,50 C50,60 40,70 30,70 C20,70 10,60 10,50 C10,40 20,30 30,30 C40,30 50,40 50,50 Z" 
+                                  fill="none" stroke="#c19673" stroke-width="0.5" opacity="0.4"/>
+                            <path d="M0,25 C10,25 20,15 20,5 C20,-5 10,-15 0,-15" 
+                                  fill="none" stroke="#d4af37" stroke-width="0.5" opacity="0.3"/>
+                            <path d="M100,25 C90,25 80,15 80,5 C80,-5 90,-15 100,-15" 
+                                  fill="none" stroke="#c19673" stroke-width="0.5" opacity="0.3"/>
+                            <circle cx="50" cy="25" r="2" fill="#d4af37" opacity="0.3"/>
+                            <circle cx="50" cy="75" r="2" fill="#c19673" opacity="0.2"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <!-- Background image placeholder -->
+            <div class="bg-placeholder" id="coverBg"></div>
+            <div class="bg-placeholder" id="coverBg" style="background-image: url('your-image.jpg'); background-size: cover; background-position: center;"></div>   
+            <div class="page-content">
+                <div class="envelope-container">
+                    <div class="envelope" id="envelope">
+
+                        <!-- Envelope Flap (front) -->
+                        <div class="envelope-flap" id="envelopeFlap">
+                            <!-- Ribbon -->
+                            <div class="ribbon-horizontal" id="ribbonH"></div>
+                            <div class="ribbon-vertical" id="ribbonV"></div>
+
+                            <!-- Pearl (click target) -->
+                            <div class="pearl-wrapper" id="pearlWrapper">
+                                <div class="pearl" id="pearl" role="button" aria-label="Abrir invitación">
+                                    <div class="pearl-gem"></div>
+                                </div>
+                            </div>
+
+                            <!-- Cover text -->
+                            <div class="cover-text">
+                                <span class="line-1">Se le concede el honor</span>
+                                <span class="line-2">de asistir</span>
+                            </div>
+                        </div>
+
+                        <!-- Envelope Body (revealed after open) -->
+                        <div class="envelope-body" id="envelopeBody">
+                            <div style="font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: #2a3834; margin-bottom: 8px;">
+                                Paloma
+                            </div>
+                            <div style="font-family: 'Playfair Display', serif; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; color: #957157;">
+                                XV Años
+                            </div>
+                            <div style="font-family: 'Playfair Display', serif; font-size: 0.85rem; color: #957157; margin-top: 6px; letter-spacing: 1px;">
+                                15 de septiembre · 2026
+                            </div>
+                            <div style="margin-top: 14px; font-family: 'Great Vibes', cursive; font-size: 1.2rem; color: #c19673;">
+                                ↓ Desliza para descubrir
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scroll indicator -->
+                    <div class="scroll-indicator" id="scrollIndicator">
+                        <span>Desliza</span>
+                        <span class="arrow">↓</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 
+              AUDIO: Background Music
+              =====================================================================
+              PURPOSE: Plays when pearl is clicked (cover interaction)
+              FORMAT: MP3 + YouTube fallback
+              NOTE: User to replace src with actual MP3 URL
+              FILE SIZE TARGET: <2MB (compressed)
+              HOSTING: Google Drive / Dropbox / Any static hosting
+              =====================================================================
+            -->
+            <audio id="bgMusic" preload="metadata">
+                <!-- User: Replace YOUR_MP3_URL_HERE.mp3 with actual MP3 URL -->
+                <source src="Quiciañera_Experience.mp3" type="audio/mpeg">
+                <!-- YouTube fallback will be added via JavaScript -->
+            </audio>
+
+        </section>
+        <!-- END PAGE 0: COVER -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 1 — INVITATION CARD
+          =====================================================================
+        -->
+        <section class="page" id="page-1">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <pattern id="filigreePattern1" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                            <path d="M50,0 C50,10 40,20 30,20 C20,20 10,10 10,0 C10,-10 20,-20 30,-20 C40,-20 50,-10 50,0 Z" fill="none" stroke="#d4af37" stroke-width="0.5" opacity="0.6"/>
+                            <path d="M50,50 C50,60 40,70 30,70 C20,70 10,60 10,50 C10,40 20,30 30,30 C40,30 50,40 50,50 Z" fill="none" stroke="#c19673" stroke-width="0.5" opacity="0.4"/>
+                            <path d="M0,25 C10,25 20,15 20,5 C20,-5 10,-15 0,-15" fill="none" stroke="#d4af37" stroke-width="0.5" opacity="0.3"/>
+                            <path d="M100,25 C90,25 80,15 80,5 C80,-5 90,-15 100,-15" fill="none" stroke="#c19673" stroke-width="0.5" opacity="0.3"/>
+                            <circle cx="50" cy="25" r="2" fill="#d4af37" opacity="0.3"/>
+                            <circle cx="50" cy="75" r="2" fill="#c19673" opacity="0.2"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#filigreePattern1)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page1Bg"></div>
+            <div class="bg-placeholder" id="page1Bg" style="background-image: url('your-image.jpg'); background-size: cover; background-position: center; opacity: 0.3;"></div>   
+            <div class="page-content">
+                <span class="page-1-name">Paloma Ordaz Bañuelos</span>
+
+                <div class="oval-frame">
+                    <!-- User: Replace src with actual photo -->
+                    <img class="photo-placeholder" id="quinceaneraPhoto" src="Mis quince_quincieñera.jpg" alt="Paloma Ordaz Bañuelos" style="display:none;">
+                    <div class="photo-placeholder" id="photoPlaceholder"></div>
+                </div>
+
+                <span class="page-1-title">Mis XV Años</span>
+                <span class="page-1-date">15 de septiembre · 2026</span>
+            </div>
+        </section>
+        <!-- END PAGE 1: INVITATION CARD -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 2 — PARENTS
+          =====================================================================
+        -->
+        <section class="page" id="page-2">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page2Bg"></div>
+
+            <div class="page-content">
+                <h2 class="page-2-header">Con el amor de mis padres</h2>
+
+                <div class="parents-container">
+                    <div class="parent-item">
+                        <div class="parent-name">Sr. Francisco</div>
+                        <!-- User: Full name can be inserted here -->
+                        <div class="parent-role" style="opacity:0.4; font-size:0.6rem;">— Padre —</div>
+                    </div>
+                    <div class="parent-item">
+                        <div class="parent-name">Sra. Argelia Ordaz Bañuelos</div>
+                        <div class="parent-role" style="opacity:0.4; font-size:0.6rem;">— Madre —</div>
+                    </div>
+                </div>
+
+                <div class="filigree-accent"></div>
+
+                <div class="formal-text">
+                    tengo el honor de invitarte a compartir
+                    uno de los días más especiales de mi vida.
+                    Te espero con el corazón abierto
+                    para celebrar juntos
+                    <span class="script-phrase">mis XV años.</span>
+                </div>
+            </div>
+        </section>
+        <!-- END PAGE 2: PARENTS -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 3 — COUNTDOWN
+          =====================================================================
+        -->
+        <section class="page" id="page-3">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page3Bg"></div>
+
+            <div class="page-content">
+                <span class="countdown-label">Faltan</span>
+                <span class="countdown-number" id="countdownNumber">--</span>
+                <span class="countdown-days">días para mi XV</span>
+            </div>
+        </section>
+        <!-- END PAGE 3: COUNTDOWN -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 4 — CEREMONY
+          =====================================================================
+        -->
+        <section class="page" id="page-4">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page4Bg"></div>
+            <div class="bg-placeholder" id="page4Bg" style="background-image: url('invitacion-paloma.html'); background-size: cover; background-position: center; opacity: 0.3;"></div>
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #2a3834; margin-bottom: 4px;">Ceremonia</h2>
+                <span class="detail-time">3:00 PM</span>
+                <span class="detail-place">Parroquia de San Antonio de Padua</span>
+                <span class="detail-address">San Antonio 37, San Antonio Xahuento, 54960 Tultepec, Méx.</span>
+                <!-- User: Replace href with actual Google Maps link -->
+                <a href="#" class="map-link" id="ceremonyMapLink" target="_blank">Ver en Google Maps</a>
+            </div>
+        </section>
+        <!-- END PAGE 4: CEREMONY -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 5 — RECEPTION
+          =====================================================================
+        -->
+        <section class="page" id="page-5">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page5Bg"></div>
+
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #2a3834; margin-bottom: 4px;">Recepción</h2>
+                <span class="detail-time">4:30 PM</span>
+                <span class="detail-place">Salón de Eventos</span>
+                <span class="detail-address">Estado de México</span>
+                <!-- User: Replace href with actual Google Maps link -->
+                <a href="#" class="map-link" id="receptionMapLink" target="_blank">Ver en Google Maps</a>
+            </div>
+        </section>
+        <!-- END PAGE 5: RECEPTION -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 6 — DRESS CODE
+          =====================================================================
+        -->
+        <section class="page" id="page-6">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page6Bg"></div>
+
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #2a3834; margin-bottom: 4px;">Código de Vestimenta</h2>
+                <span class="dress-type">Cóctel</span>
+                <p class="dress-note">Queda reservado el color dorado y rosa golden en todas sus tonalidades para la quinceañera.</p>
+            </div>
+        </section>
+        <!-- END PAGE 6: DRESS CODE -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 7 — GIFT OPTIONS
+          =====================================================================
+        -->
+        <section class="page" id="page-7">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page7Bg"></div>
+
+            <div class="page-content">
+                <span class="gift-title">Opciones de Regalo</span>
+
+                <p style="font-family: 'Playfair Display', serif; font-size: 0.85rem; color: #2d2d2d; max-width: 360px; line-height: 1.6; margin: 6px 0 10px;">
+                    Mi mejor regalo es compartir contigo este gran día... Sin embargo, si deseas obsequiarme algo puedo sugerir:
+                </p>
+
+                <div class="gift-grid">
+                    <div class="gift-item">
+                        <span class="gift-icon">💌</span>
+                        <span class="gift-label">Lluvia de sobres</span>
+                    </div>
+                    <div class="gift-item">
+                        <span class="gift-icon">🎁</span>
+                        <span class="gift-label">Regalos</span>
+                    </div>
+                </div>
+
+                <div class="transfer-section">
+                    <div class="transfer-label">Transferencias</div>
+                    <!-- User: Replace with actual credit card/account number -->
+                    <div class="transfer-placeholder" id="transferPlaceholder">XXXX · XXXX · XXXX · XXXX</div>
+                </div>
+
+                <span class="gift-thanks">¡Gracias, me encantará!</span>
+            </div>
+        </section>
+        <!-- END PAGE 7: GIFT OPTIONS -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 8 — GALLERY (Carousel)
+          =====================================================================
+        -->
+        <section class="page" id="page-8">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page8Bg"></div>
+
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #2a3834; margin-bottom: 8px;">Galería</h2>
+
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carouselTrack">
+
+                        <!-- Slide 1 -->
+                        <div class="carousel-slide">
+                            <div class="img-placeholder img-1"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-2"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-3"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-4"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-5"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-6"><!-- User: Replace with <img> --></div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="carousel-slide">
+                            <div class="img-placeholder img-1"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-2"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-3"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-4"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-5"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-6"><!-- User: Replace with <img> --></div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="carousel-slide">
+                            <div class="img-placeholder img-1"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-2"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-3"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-4"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-5"><!-- User: Replace with <img> --></div>
+                            <div class="img-placeholder img-6"><!-- User: Replace with <img> --></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Carousel navigation dots -->
+                <div class="carousel-dots" id="carouselDots">
+                    <button class="carousel-dot active" data-index="0" aria-label="Slide 1"></button>
+                    <button class="carousel-dot" data-index="1" aria-label="Slide 2"></button>
+                    <button class="carousel-dot" data-index="2" aria-label="Slide 3"></button>
+                </div>
+            </div>
+        </section>
+        <!-- END PAGE 8: GALLERY -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 9 — RSVP
+          =====================================================================
+        -->
+        <section class="page" id="page-9">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page9Bg"></div>
+
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #2a3834; margin-bottom: 4px;">Asistencia</h2>
+                <p class="rsvp-text">Te agradecemos confirmar tu asistencia.<br>Esperamos contar contigo.</p>
+
+                <!-- WhatsApp link with prefilled options -->
+                <a href="https://wa.me/522205850028?text=Nombre:%20%0AConfirmo%20asistencia%20✅%0APor%20confirmar%20📅%0ANo%20podré%20asistir%20🙏"
+                   class="rsvp-button"
+                   id="rsvpButton"
+                   target="_blank">
+                    Confirmar Asistencia
+                </a>
+
+                <p class="rsvp-contact">Confirmar con: Letzy Adriana</p>
+            </div>
+        </section>
+        <!-- END PAGE 9: RSVP -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 10 — THANKS
+          =====================================================================
+        -->
+        <section class="page" id="page-10">
+
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+
+            <div class="bg-placeholder" id="page10Bg"></div>
+
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.4rem; color: #2a3834; margin-bottom: 8px;">Gracias</h2>
+                <p class="thanks-text">
+                    Gracias de todo corazón a mis padres, padrinos y a cada persona que hizo posible este sueño.
+                    Por su amor, apoyo y esfuerzo y por que se que harán de mí día algo inolvidable.
+                    Los llevo siempre en mi alma.
+                </p>
+                <span class="thanks-name">Paloma Ordaz Bañuelos</span>
+            </div>
+        </section>
+        <!-- END PAGE 10: THANKS -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 11 — CUSTOM (Reserved)
+          =====================================================================
+          INSTRUCTION: To uncomment this page, remove the <!-- and --> tags
+          surrounding the section block below. Then add your content inside
+          the .page-content div.
+          =====================================================================
+        -->
+        <!-- 
+        <section class="page" id="page-11">
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+            <div class="bg-placeholder" id="page11Bg"></div>
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: #2a3834;">Tu contenido aquí</h2>
+                <p style="font-family: 'Playfair Display', serif; color: #2d2d2d;">Agrega cualquier elemento adicional.</p>
+            </div>
+        </section>
+        -->
+
+
+        <!-- 
+          =====================================================================
+          PAGE 12 — CUSTOM (Reserved)
+          =====================================================================
+          INSTRUCTION: To uncomment this page, remove the <!-- and --> tags
+          surrounding the section block below. Then add your content inside
+          the .page-content div.
+          =====================================================================
+        -->
+        <!-- 
+        <section class="page" id="page-12">
+            <div class="filigree-overlay">
+                <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                    <rect width="100%" height="100%" fill="url(#filigreePattern)"/>
+                </svg>
+            </div>
+            <div class="bg-placeholder" id="page12Bg"></div>
+            <div class="page-content">
+                <h2 style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: #2a3834;">Tu contenido aquí</h2>
+                <p style="font-family: 'Playfair Display', serif; color: #2d2d2d;">Agrega cualquier elemento adicional.</p>
+            </div>
+        </section>
+        -->
+
+    </div>
+    <!-- END INVITATION CONTAINER -->
+
+
+    <!-- 
+      =====================================================================
+      JAVASCRIPT
+      =====================================================================
+      PURPOSE: Handle all interactions, animations, and dynamic content
+      =====================================================================
+    -->
+    <script>
+        (function() {
+            'use strict';
+
+            // =====================================================================
+            // 1. COVER INTERACTION — Pearl click → envelope opens + music starts
+            // =====================================================================
+            var pearl = document.getElementById('pearl');
+            var pearlWrapper = document.getElementById('pearlWrapper');
+            var envelope = document.getElementById('envelope');
+            var ribbonH = document.getElementById('ribbonH');
+            var ribbonV = document.getElementById('ribbonV');
+            var scrollIndicator = document.getElementById('scrollIndicator');
+            var bgMusic = document.getElementById('bgMusic');
+            var isOpen = false;
+
+            function openEnvelope() {
+                if (isOpen) return;
+                isOpen = true;
+
+                // Slide ribbon off
+                ribbonH.classList.add('slide-off');
+                ribbonV.classList.add('slide-off');
+
+                // Open envelope after ribbon starts sliding
+                setTimeout(function() {
+                    envelope.classList.add('open');
+                }, 400);
+
+                // Show scroll indicator
+                setTimeout(function() {
+                    scrollIndicator.classList.add('visible');
+                }, 1200);
+
+                // Start background music
+                if (bgMusic) {
+                    bgMusic.play().catch(function(e) {
+                        console.log('Audio play failed. YouTube fallback will be used.');
+                        // YouTube fallback
+                        var youtubeFallback = document.createElement('iframe');
+                        youtubeFallback.src = 'https://www.youtube-nocookie.com/embed/YOUR_YOUTUBE_ID_HERE?autoplay=1&loop=1&controls=0&playlist=YOUR_YOUTUBE_ID_HERE';
+                        youtubeFallback.style.cssText = 'position:absolute;width:0;height:0;border:0;opacity:0;pointer-events:none;';
+                        document.body.appendChild(youtubeFallback);
+                    });
+                }
+            }
+
+            // Click/tap handler
+            pearl.addEventListener('click', openEnvelope);
+            pearlWrapper.addEventListener('click', openEnvelope);
+
+            // Touch support (prevent double-firing)
+            pearl.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                openEnvelope();
+            }, { passive: false });
+
+            pearlWrapper.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                openEnvelope();
+            }, { passive: false });
+
+            // Keyboard accessibility (Enter/Space)
+            pearl.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openEnvelope();
+                }
+            });
+
+            // =====================================================================
+            // 2. COUNTDOWN TIMER — Animated days until event
+            // =====================================================================
+            var countdownNumber = document.getElementById('countdownNumber');
+
+            // Set event date: September 15, 2026
+            var eventDate = new Date('2026-09-15T00:00:00');
+
+            function updateCountdown() {
+                var now = new Date();
+                var diff = eventDate - now;
+
+                if (diff <= 0) {
+                    countdownNumber.textContent = '¡Hoy!';
+                    return;
+                }
+
+                var days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                countdownNumber.textContent = days;
+            }
+
+            // Update immediately
+            updateCountdown();
+
+            // Update every hour (60 * 60 * 1000 = 3600000ms)
+            setInterval(updateCountdown, 3600000);
+
+            // =====================================================================
+            // 3. CAROUSEL — Gallery slideshow
+            // =====================================================================
+            var track = document.getElementById('carouselTrack');
+            var dots = document.querySelectorAll('.carousel-dot');
+            var currentSlide = 0;
+            var totalSlides = dots.length;
+            var slideInterval;
+
+            function goToSlide(index) {
+                if (index < 0) index = totalSlides - 1;
+                if (index >= totalSlides) index = 0;
+                currentSlide = index;
+                track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+                dots.forEach(function(dot, i) {
+                    dot.classList.toggle('active', i === currentSlide);
+                });
+            }
+
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
+
+            // Dot click handlers
+            dots.forEach(function(dot) {
+                dot.addEventListener('click', function() {
+                    var index = parseInt(this.getAttribute('data-index'));
+                    goToSlide(index);
+                    resetAutoPlay();
+                });
+            });
+
+            // Auto-play
+            function startAutoPlay() {
+                slideInterval = setInterval(nextSlide, 4000);
+            }
+
+            function resetAutoPlay() {
+                clearInterval(slideInterval);
+                startAutoPlay();
+            }
+
+            // Start carousel
+            goToSlide(0);
+            startAutoPlay();
+
+            // Pause on hover/touch
+            var carouselContainer = document.querySelector('.carousel-container');
+            if (carouselContainer) {
+                carouselContainer.addEventListener('mouseenter', function() {
+                    clearInterval(slideInterval);
+                });
+                carouselContainer.addEventListener('mouseleave', function() {
+                    startAutoPlay();
+                });
+                carouselContainer.addEventListener('touchstart', function() {
+                    clearInterval(slideInterval);
+                });
+                carouselContainer.addEventListener('touchend', function() {
+                    startAutoPlay();
+                });
+            }
+
+            // =====================================================================
+            // 4. PHOTO PLACEHOLDER — Show image when user adds src
+            // =====================================================================
+            var photoImg = document.getElementById('quinceaneraPhoto');
+            var photoPlaceholder = document.getElementById('photoPlaceholder');
+
+            // If user sets src, hide placeholder and show image
+            if (photoImg && photoImg.src && photoImg.src !== '') {
+                photoImg.style.display = 'block';
+                photoPlaceholder.style.display = 'none';
+            }
+
+            // =====================================================================
+            // 5. MAP LINKS — Placeholder for Google Maps
+            // =====================================================================
+            var ceremonyMapLink = document.getElementById('ceremonyMapLink');
+            var receptionMapLink = document.getElementById('receptionMapLink');
+
+            // User: Replace href with actual Google Maps URLs
+            ceremonyMapLink.href = '#';
+            receptionMapLink.href = '#';
+
+            // =====================================================================
+            // 6. TRANSFER PLACEHOLDER — Credit card/account number
+            // =====================================================================
+            var transferPlaceholder = document.getElementById('transferPlaceholder');
+            // User: Replace text with actual account details
+            transferPlaceholder.textContent = 'XXXX · XXXX · XXXX · XXXX';
+
+            // =====================================================================
+            // 7. CONSOLE LOG — Ready
+            // =====================================================================
+            console.log('✅ Invitación cargada correctamente.');
+            console.log('📌 Haz clic en la perla para abrir la invitación.');
+            console.log('🔧 Instrucciones: Reemplaza los placeholders con tu contenido.');
+
+        })();
+    </script>
+
+</body>
+</html>
